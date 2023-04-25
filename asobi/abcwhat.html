@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ABCなにか(Dまで)ガチャ</title>
+  <style>
+    body {
+      background: rgb(38, 38, 38);
+      height: 100vh;
+      display: grid;
+      place-items: center;
+      margin: 0;
+    }
+
+    div {
+      background: rgba(255, 255, 255, .15);
+      text-align: center;
+      color: rgba(255, 250, 250, .8);
+      border-radius: 38px;
+      padding: 5em 2em;
+      box-shadow: 0px 0px 16px -6px rgb(0 0 0) inset;
+    }
+
+    h1 {
+      background: linear-gradient(328deg, #d471cf 0%, #8cdbd8 62%, #6a8ef8 100%);
+      background: -webkit-linear-gradient(328deg, #d471cf 0%, #8cdbd8 62%, #6a8ef8 100%);
+      width: max-content;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin: auto;
+      border-bottom: 1px solid rgba(255, 250, 250, 0.583);
+      padding-bottom: 8px;
+    }
+
+    span.caution {
+      background: linear-gradient(328deg, #8cdbd8 0%, #6a8ef8 100%);
+      background: -webkit-linear-gradient(328deg, #8cdbd8 0%, #6a8ef8 100%);
+      width: max-content;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-size: 1.6rem;
+      font-weight: bold;
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div>
+    <h1>ABCなにか(Dまで)ガチャ</h1>
+    <p>
+      <span id="day"></span><span class="caution" id="num"></span>
+    </p>
+  </div>
+  <script>
+    const date = new Date();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    // ABC126〜289（最新-10回）
+    const num = Math.round(Math.random() * 163) + 126;
+    document.getElementById('day').textContent = `${month}月${day}日の「ABCなにか(Dまで)」は…`;
+    document.getElementById('num').textContent = `ABC${String(num).padStart(3, "0")}`;
+  </script>
+</body>
+</html>
