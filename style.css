@@ -10,3 +10,7 @@ body {
 h1 {
   text-align: center;
 }
+
+div.asobi {
+  height: max-content;
+}
