@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <title>クリックすると ねこが ふえるよ</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #020E34;
+            cursor: none;
+            margin: 0;
+            font-family: 'DotGothic16', sans-serif;
+        }
+
+        div.header {
+            background: rgba(0, 0, 0, 0.473);
+            text-align: center;
+            padding: 1em;
+        }
+
+        h1 {
+            color: aliceblue;
+            font-weight: normal;
+            margin-top: 0;
+            font-size: 1.2em;
+        }
+
+        a, p {
+            color: aliceblue;
+            font-size: .6em;
+        }
+
+        div#particles-js {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #232741;
+            background-repeat: no-repeat;
+            background-size: 20%;
+            background-position: 50% 50%;
+        }
+
+        div.count-particles {
+            position: absolute;
+            left: 0;
+            width: 100%;
+        }
+
+        div#cursor {
+            position: fixed;
+            z-index: 2;
+            pointer-events: none;
+            width: 20px;
+            height: 20px;
+            background: #f1f8a070;
+            border-radius: 50%;
+        }
+
+        div#cursor img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+        }
+
+        @media (max-width: 600px) {
+            #cursor, #cursor img {
+                display: none;
+            }
+
+            body {
+                cursor: initial;
+            }
+ 
+        }
+    </style>
+</head>
+
+<body>
+    <div id="cursor">
+        <img src="./img/cur.png" alt="びっくりねこ">
+    </div>
+
+    <div id="particles-js"></div>
+
+    <div class="count-particles">
+
+        <div class="header">
+            <h1>おすと ねこが ふえるよ</h1>
+            <p>
+                ありがとう<br>
+                <a href="https://vincentgarreau.com/particles.js/">particles.js</a>
+            </p>
+        </div>
+
+    </div>
+
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"
+        integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        $(function () {
+
+            var cursor = $("#cursor");
+            $(document).on("mousemove", function (e) {
+                var x = e.clientX;
+                var y = e.clientY;
+                cursor.css({
+                    "top": y + "px",
+                    "left": x + "px"
+                });
+            });
+
+        });
+
+
+        particlesJS("particles-js", {
+            "particles": {
+                "number": {
+                    "value": 30,
+                    "density": {
+                        "enable": true,
+                        "value_area": 1121.6780303333778
+                    }
+                },
+                "color": {
+                    "value": "#fff"
+                },
+                "shape": {
+                    "type": "image",
+                    "stroke": {
+                        "width": 0,
+                    },
+                    "image": {
+                        "src": "img/happy.png",
+                        "width": 120,
+                        "height": 120
+                    }
+                },
+                "opacity": {
+                    "value": 0.06409588744762158,
+                    "random": true,
+                    "anim": {
+                        "enable": false,
+                        "speed": 1,
+                        "opacity_min": 0.1,
+                        "sync": false
+                    }
+                },
+                "size": {
+                    "value": 77.011985930952697,
+                    "random": true,
+                    "anim": {
+                        "enable": false,
+                        "speed": 4,
+                        "size_min": 1,
+                        "sync": false
+                    }
+                },
+                "line_linked": {
+                    "enable": false,
+                },
+                "move": {
+                    "enable": true,
+                    "speed": 5,
+                    "direction": "bottom-right",
+                    "random": false,
+                    "straight": false,
+                    "out_mode": "in",
+                    "bounce": true,
+                    "attract": {
+                        "enable": false,
+                        "rotateX": 281.9177489524316,
+                        "rotateY": 127.670995809726
+                    }
+                }
+            },
+            "interactivity": {
+                "detect_on": "canvas",
+                "events": {
+                    "onhover": {
+                        "enable": false,
+                    },
+                    "onclick": {
+                        "enable": true,
+                    },
+                    "resize": true
+                }
+            },
+            "retina_detect": false
+        });
+    </script>
+</body>
+
+</html>
