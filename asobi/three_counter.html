@@ -1,82 +1,98 @@
 <!DOCTYPE html>
 <html lang="ja">
-    <head>
-        <meta charset="UTF-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>3の倍数プログラム with bootstrap</title>
-        <link
-            href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
-            rel="stylesheet"
-            integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
-            crossorigin="anonymous"
-        />
 
-        <style>
-            body {
-                text-align: center;
-            }
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>3の倍数プログラム with bootstrap</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
 
-            .output {
-                background: #333;
-                padding: 20px;
-                color: #fff;
-                border-radius: 5px;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="container">
-            <h1>3の倍数プログラム</h1>
+    <style>
+        body {
+            text-align: center;
+        }
 
-            <button
-                type="button"
-                id="count"
-                class="btn btn-primary btn-lg w-100 mt-5 mb-3"
-            >
-                数える
-            </button>
+        .output {
+            background: #333;
+            padding: 20px;
+            color: #fff;
+            border-radius: 5px;
+            height: 70vh;
+            overflow: scroll;
+        }
+    </style>
+</head>
 
-            <div class="output" id="output"></div>
-        </div>
+<body>
+    <div class="container">
+        <h1>3の倍数プログラム<br>
+            （1 <= i <= 100）</h1>
 
-        <script
-            src="https://code.jquery.com/jquery-3.6.0.min.js"
-            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
-            crossorigin="anonymous"
-        ></script>
+        <button type="button" id="count" class="btn btn-primary btn-lg w-100 mt-5 mb-3">
+            数える
+        </button>
 
-        <script>
-            $(function () {
-                $("#count").on("click", countFunny);
-            });
+        <div class="output" id="output"></div>
+    </div>
 
-            //countFunny用の変数
-            let countNumber;
-            let i = 1;
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
-            function countFunny() {
-                if (i === 3) {
-                    countNumber = "さぁん！";
-                    $("#output").append("<p>" + countNumber + "</p>");
-                    i++;
-                } else if (i === 6) {
-                    countNumber = "ろぉく！！";
-                    $("#output").append("<p>" + countNumber + "</p>");
-                    i++;
-                } else if (i === 9) {
-                    countNumber = "きゅうう！！！";
-                    $("#output").append("<p>" + countNumber + "</p>");
-                    i++;
-                } else if (i > 10) {
-                    //ここの条件は後で足す
-                    return 0;
+    <script>
+        $(function () {
+            $("#count").on("click", countFunny);
+        });
+
+        //countをFunnyにするための変数
+        let i = 1;
+
+        //countをFunnyにするための関数
+        function countFunny() {
+            if (i % 3 === 0 || i.toString().includes('3')) {
+
+                if (i >= 10 && i < 20) {
+                    $("#output").append("<p>" + "じゅう" + callNum(i - 10) + "!!" + "</p>");
                 } else {
-                    countNumber = i;
-                    $("#output").append("<p>" + countNumber + "</p>");
-                    i++;
+                    $("#output").append("<p>" + callNum(i) + "!!" + "</p>");
                 }
+            } else if (i > 100) {
+                return 0
+            } else {
+                $("#output").append("<p>" + i + "</p>");
             }
-        </script>
-    </body>
+
+            i++;
+        }
+
+
+        // 数値をひらがなにする関数
+        function callNum(num) {
+            const hiraganaMap = {
+                1: "いぃち",
+                2: "にぃ",
+                3: "さぁん",
+                4: "ヨォん",
+                5: "ご",
+                6: "ろぉく",
+                7: "なぁな",
+                8: "はぁち",
+                9: "きゅゅう"
+            };
+            const tensPlace = Math.floor(num / 10);
+            const onesPlace = num % 10;
+            let hiragana = "";
+            if (tensPlace > 0) {
+                hiragana += hiraganaMap[tensPlace] + "じゅう";
+            }
+            if (onesPlace > 0) {
+                hiragana += hiraganaMap[onesPlace];
+            }
+            return hiragana;
+        }
+
+    </script>
+</body>
+
 </html>
