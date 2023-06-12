@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>けんたろうくんおみくじ(いぬしゃん専用)</title>
+</head>
+<body>
+  <h1>
+    けんたろうくんおみくじ<br>
+    いぬしゃん専用
+  </h1>
+
+  <p id="out"></p>
+
+  <script>
+    const todo = ["とディズニーに行く",
+        "の大学合格祝いをする",
+        "と焼肉食べ放題に行く",
+        "とカラオケオールする",
+        "と料理をする",
+        "と時間を気にせずに遊ぶ",
+        "と旅行に行く",
+        "とお泊まりをする",
+        "とたくさん思い出を作る",
+        "と結婚する",
+        "と一緒に暮らす",
+        "に宇宙で1番しあわせにしてもらう",
+        "を宇宙で1番しあわせにする",
+        "歳をとって最後はけんたろうくんの隣で死ぬ",
+        "がいぬしゃんでよかったと思えるようにたくさんのしあわせをあげる",
+        ];
+
+    let n = Math.floor(Math.random() * todo.length);
+
+    document.getElementById('out').textContent = 'けんたろうくん' + todo[n];
+  </script>
+</body>
+</html>
+
