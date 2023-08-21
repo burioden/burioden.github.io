@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>もふもふ</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cherry+Bomb+One&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Cherry Bomb One', cursive;
+        }
+        
+        img {
+            width: 320px;
+            height: 320px;
+            object-fit: cover;
+            border-radius: 50%;
+            box-shadow: 0 0 15px gray;
+        }
+        
+        h1 {
+            color: white;
+            text-shadow: 0 0 15px gray;
+            margin-bottom: 2rem;
+        }
+        
+        body {
+            display: grid;
+            place-items: center;
+            align-content: center;
+            height: 100vh;
+        }
+        
+        main {
+            text-align: center;
+        }
+        
+        button {
+            background-color: white;
+            /* padding: 1em; */
+            width: 130px;
+            height: 130px;
+            transition: .5s;
+            border-radius: 50%;
+            border: none;
+            box-shadow: 0 0 15px gray;
+            font-size: 1.2em;
+            color: gray;
+        }
+        
+        button:hover {
+            cursor: pointer;
+            background-color: rgba(226, 246, 250, 0.894);
+            color: rgb(255, 220, 23);
+            box-shadow: 0 0 15px rgb(255, 220, 23);
+        }
+        
+        div {
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>もふもふで いやされよう</h1>
+    </header>
+    <main>
+        <button onclick="getDog()">いぬちぇんじ</button>
+        <div>
+            <img src="./inu.jpg" alt="いぬ" class="image-content">
+        </div>
+    </main>
+    <footer></footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script>
+        const image = document.querySelector('.image-content')
+
+
+        function getDog() {
+            $.getJSON('https://dog.ceo/api/breeds/image/random', function (data) {
+                $('.json pre').html(JSON.stringify(data, null, 4));
+                image.src = data.message;
+            });
+        }
+    </script>
+</body>
+
+</html>
