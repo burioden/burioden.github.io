@@ -1,164 +1,399 @@
-@charset "utf-8";
-@import url('https://fonts.googleapis.com/css2?family=Klee+One&display=swap');
+@charset 'utf-8';
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed&family=Noto+Sans+JP:wght@100..900&display=swap');
 
-body {
-  margin: 0;
-  font-family: 'Klee One', cursive;
-  color: #444;
-}
+/* Reset CSS */
 
 * {
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
 }
 
-div.main_wrapper {
-    max-width: 1200px;
-    margin: auto;
-}
-
-img {
-    max-width: 100%;
-    vertical-align: bottom;
-}
-
-a {
-    color: #237db2;
-}
-
-h1 {
-  text-align: center;
-}
-
-h1::before {
-    content: "。●";
-    font-size: .5em;
-    color: #888;
-}
-
-h1::after {
-    content: "● 。";
-    font-size: .5em;
-    color: #888;
-}
-
-h2 {
-    border-bottom: 7px dotted #888;
-    width: max-content;
-    padding-bottom: 5px;
-    margin-left: 1em;
-}
-
-p.kiaidakehaaru {
-    font-size: small;
-    text-align: center;
-}
-
 ul {
-    list-style: circle;
-}
-
-section {
-    margin-bottom: 5em;
-}
-
-div.icon_wrapper {
-    width: 95%;
-    margin: auto;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(2, 1fr);
-    gap: 10px;
-}
-
-@media (max-width: 800px) {
-    div.icon_wrapper {
-        grid-template-columns: repeat(2, 1fr);
-        grid-template-rows: repeat(3, 1fr);
-    }
-}
-
-figure {
-    margin: 0;
-    position: relative;
-    overflow: hidden;
-    box-shadow: 0 0 15px rgba(136, 136, 136, .3);
-}
-
-figcaption {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    right: 0;
-    background: rgba(0, 0, 0, .5);
-    color: #fff;
-    opacity: 0;
-    display: grid;
-    place-items: center;
-    padding: 3em;
-    border-radius: 50%;
-    transition: .4s ease-in;
-}
-
-figure:hover figcaption {
-    opacity: 1;
-    border-radius: 0;
-}
-
-section.link ul {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    list-style: none;
     padding-left: 0;
 }
 
-section.link ul li {
-    display: flex;
-    place-items: center;
-    list-style: none;
-    flex-shrink: 0;
-    width: 90px;
-    height: 90px;
-    margin: 3em;
-    background: #333;
+a {
     text-decoration: none;
-    border-radius: 50%;
-    font-size: .6em;
+    color: inherit;
+    transition: .2s;
+}
+
+img {
+    vertical-align: bottom;
+    max-width: 100%;
+}
+
+/* Global Styles */
+
+html {
+    font-size: 62.5%;
+}
+
+body {
+    background: #fef8f4;
+    font-size: 1.6rem;
+    letter-spacing: 1.6px;
+    color: #676159;
+    font-family: "Noto Sans JP", sans-serif;
+    font-weight: 300;
+}
+
+header {
+    padding-top: 7rem;
+    height: 80vh;
     text-align: center;
-    transition: .6s;
 }
 
-section.link ul li:nth-of-type(odd) {
-    transform: translateY(12px);
+/* main */
+
+.main-wrapper {
+    max-width: 800px;
+    margin: 20rem auto;
+    padding: 0 2rem;
 }
 
-section.link ul li:hover {
-    background: #237db2;
-    transform: translateY(-12px);
-    box-shadow: 0 0 17px rgba(136, 136, 136, .8);
+section {
+    margin-top: 5rem;
 }
 
-section.link ul li:nth-of-type(odd):hover {
-    background: #c13333;
-    transform: translateY(0px);
+section.news {
+    margin-top: 20rem;
 }
 
-section.link a {
+/* footer */
+
+footer {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+footer ul {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+footer small {
+    font-size: 0.8rem;
+}
+
+footer img {
+    transition: 0.4s ease-out;
+}
+
+footer img:hover {
+    filter: drop-shadow(0 0 10px #676159);
+}
+
+h2 {
+    font-size: 2.2rem;
+    text-align: center;
+    font-weight: normal;
+    letter-spacing: .5em;
+    margin-bottom: 5rem;
+}
+
+h2::after {
+    content: '';
     display: block;
+    width: 20px;
+    height: 1.5px;
+    background: #676159;
+    margin: 1rem auto;
+    transform: translateX(-0.5rem);
+}
+
+h3 {
+    font-size: 2rem;
+    font-weight: normal;
+    letter-spacing: .2em;
+}
+
+p {
+    font-size: 1.4rem;
+    text-align: justify;
+    line-height: 1.6;
+}
+
+.border {
+    text-align: center;
+    margin-bottom: 10rem;
+}
+
+.border img {
+    width: 200px;
+}
+
+.post-box {
+    border: 1px solid #676159;
+    background: #fef8f4;
+    padding: 2rem;
+    margin-bottom: 5rem;
+    transition: 0.4s ease-out;
+}
+
+a.post-link:hover .post-box {
+    filter: drop-shadow(0 0 30px #67615980);
+    border-color: transparent;
+    background-color: #fff8f4;
+}
+
+div.box-heading {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+div.date {
+    width: 80px;
+    height: 80px;
+    background: #676159;
+    color: #fef8f4;
+    font-family: "Barlow Condensed", system-ui;
+    letter-spacing: normal;
+    font-size: 1.6rem;
+    padding: 1rem;
+}
+
+div.date .year {
+    border-bottom: 1px solid #fef8f4;
+    display: block;
+}
+
+div.date .month-and-day {
+    font-size: 3.8rem;
+    display: block;
+}
+
+div.tags {
+    height: 4rem;
+    margin-bottom: 2rem;
+}
+
+span.tag {
+    font-size: 1.2rem;
+    color: #bfb4a7;
+}
+
+div.post-box-image {
+    text-align: center;
+}
+
+div.post-box-image img {
+    width: 100%;
+    max-height: 265px;
+    object-fit: cover;
+}
+
+.coming-soon {
+    text-align: center;
+    margin: 10rem 0;
+}
+
+
+/* profile */
+
+.profile {
+    margin: 10rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 5rem;
+}
+
+.profile-v {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.profile-v img {
+    display: block;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.profile-name {
+    display: flex;
+    align-items: flex-end;
+}
+
+.profile-name span {
+    writing-mode: vertical-rl;
+    display: inline-block;
+}
+
+.hn {
+    font-size: 2.5rem;
+    font-weight: 100;
+    letter-spacing: 1.6rem;
+}
+
+.hm {
+    padding-bottom: 1.6rem;
+}
+
+/* post */
+
+header.post {
+    width: 100%;
+    height: fit-content;
+    background: url(./img/burioden.png) no-repeat center center;
+    background-size: cover;
+    position: fixed;
+    padding: 0;
+    z-index: 999;
+    box-shadow: 0 0 10px #00000080;
+}
+
+.header-wrapper {
+    background-color: #00000080;
+    padding: 2rem;
+}
+
+.post h1 {
+    color: #fef8f4;
+    width: max-content;
+}
+
+.header-title {
+    display: block;
+    font-size: 2.5rem;
+    font-weight: 300;
+    letter-spacing: 1.2rem;
+}
+
+.header-sub-title {
+    display: block;
+    font-size: 1rem;
+    margin-left: -1.2rem;
+}
+
+header.post a {
+    display: block;
+    width: max-content;
+}
+
+header.post a:hover {
+    filter: drop-shadow(0 0 10px #fef8f4);
+}
+
+.post .main-wrapper {
+    padding-top: 12.5rem;
+    margin-top: 0;
+    margin-bottom: 10rem;
+}
+
+.post-container {
+    margin-top: 0;
+}
+
+.post-container a {
+    color: #ba5456;
+    text-decoration: underline;
+}
+
+.post .post-box-image img {
+    width: 100%;
+    max-height: 100%;
+}
+
+.back {
+    display: block;
+    width: max-content;
+    margin: 5rem auto;
+}
+
+.back:hover {
+    filter: drop-shadow(0 0 10px #67615980);
+}
+
+.post h2 {
+    font-size: 2rem;
+    font-weight: normal;
+    letter-spacing: .2em;
+    margin-bottom: 0;
+}
+
+.post h2::after {
+    display: none;
+}
+
+.post h3 {
+    font-weight: 400;
+}
+
+.post-main-content-catch::first-letter {
+    initial-letter: 2 2;
+}
+
+.video-container {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%; /* 16:9 のアスペクト比を維持するためのパディング */
+    height: 0;
+    overflow: hidden;
+    margin-bottom: 2rem;
+}
+
+.video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
-    line-height: 90px;
-    text-decoration: none;
-    color: #eee;
+    border: 0;
 }
 
-div.link_list {
-    max-width: 700px;
-    margin: auto;
 
+.post-main-content p {
+    margin-bottom: 2rem;
 }
 
-footer p {
-    text-align: right;
-    margin-right: 1em;
+.post-main-content h3 {
+    margin-top: 5rem;
+    margin-bottom: 2rem;
+}
+
+.post-main-content-img {
+    display: block;
+    margin: 0 auto 2rem;
+}
+
+.post-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+    gap: 2rem;
+}
+
+/* pc */
+
+@media screen and (min-width: 800px) {
+
+    .post-box {
+        padding: 4em;
+    }
+
+    .profile {
+        flex-direction: row-reverse;
+    }
+
+    .profile-text {
+        width: 70%;
+    }
+
+    .border img {
+        width: 300px;
+    }
+
+
+    /* post */
+    .post .main-wrapper {
+        padding-top: 20rem;
+    }
 }
