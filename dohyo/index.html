@@ -1,408 +1,44 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja">
+
 <head>
-  <meta charset="UTF-8">
-  <title>ヒューリスティック問題ビジュアライザ</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      margin: 20px;
-    }
-    #controls {
-      display: flex;
-      gap: 2em;
-    }
-    textarea {
-      width: 300px;
-      height: 200px;
-      margin-bottom: 10px;
-      font-family: monospace;
-    }
-    #grid {
-      position: relative;
-      display: grid;
-      margin-top: 20px;
-      background: #3F9877;
-      color: #fff;
-    }
-    .cell {
-      box-sizing: border-box;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 14px;
-      position: relative;
-    }
-    /* プレイヤーのマーカー */
-    .cell .player {
-      position: absolute;
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-    }
-    .player.takahashi {
-      background: red;
-      top: 2px;
-      left: 2px;
-    }
-    .player.aoki {
-      background: blue;
-      bottom: 2px;
-      right: 2px;
-    }
-    #scoreDisplay {
-      margin-top: 20px;
-      font-size: 16px;
-      font-weight: bold;
-    }
-    button {
-      padding: 0.5em 1em;
-      margin: 0.2em;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <title>洞窟ビジュアライザ</title>
+    <link rel="stylesheet" href="./style.css" class="css">
 </head>
+
 <body>
-  <h1>土俵</h1>
-  <span id="scoreDisplay">Score: -</span>
-  <div id="controls">
-    <div>
-      <p>入力</p>
-      <textarea id="inputText">0 10
-000100001
-000100001
-000100001
-000100000
-001000010
-001000010
-001000010
-001000000
-000000000
-000000000
-0111111100
-1100000000
-0000000000
-1110000000
-0000000111
-0000000000
-0000111100
-0000000000
-0000000000
-2 47 60 6 76 72 52 90 19 77
-42 59 7 45 17 80 71 55 65 75
-16 21 35 9 15 95 50 91 54 20
-34 39 10 38 69 99 63 92 14 87
-36 89 41 81 97 78 56 30 68 98
-82 67 40 73 58 26 53 33 100 74
-4 12 28 64 31 37 62 24 70 93
-27 61 83 94 25 32 5 88 85 46
-29 13 8 86 66 57 44 23 48 11
-22 49 84 18 79 1 96 43 3 51</textarea>
+    <h1>洞窟ビジュアライザ</h1>
+
+    <!-- スコア表示領域 -->
+    <div id="scoreboard">Score: (まだ計算されていません)</div>
+
+    <div class="wrapper">
+        <!-- 入力(N M + 盤面) -->
+        <div class="input-field">
+            <h2>入力 (N, M, 盤面)</h2>
+            <textarea id="inputData"
+                placeholder="例:&#10;20 1&#10;..a.@....a.....a....&#10;..@........@..a.@a@.&#10;..aa...a..@.....a...&#10;..."></textarea>
+        </div>
+
+        <div class="output-field">
+            <!-- コマンド入力 -->
+            <h2>コマンド入力</h2>
+            <textarea id="commands" placeholder="例:&#10;1 R&#10;1 R&#10;2 L&#10;3 U"></textarea>
+        </div>
     </div>
 
-    <div>
-      <p>出力</p>
-      <textarea id="outputText">0 0 0 1
-0 . R
-1 D L
-0 R .
-0 R .
-1 R L</textarea>
+    <div id="controls">
+        <button id="resetBtn">描画</button>
+        <button id="stepBtn">1手進む</button>
+        <!-- ★ <button id="stepBackBtn">1手戻す</button> -->
+        <button id="playBtn">自動再生</button>
+        <!-- ★ <button id="stopBtn">一時停止</button> -->
     </div>
-  </div>
 
-  <div>
-    <button id="resetBtn">リセット / 再描画</button>
-    <button id="playBtn">再生</button>
-    <button id="pauseBtn">一時停止</button>
-    <button id="stepBtn">進む</button>
-    <button id="backBtn">戻る</button>
-  </div>
-
-  <div id="gridContainer">
-    <h3>盤面</h3>
     <div id="grid"></div>
-  </div>
 
-  <script>
-    // グローバル変数：盤面情報、操作、プレイヤーの位置など
-    let board = {
-      t: 0,
-      N: 0,
-      v: [],
-      h: [],
-      a: []
-    };
-    let moves = []; // 出力例の各操作（swap, 高橋君の移動, 青木君の移動）
-    let currentMove = 0;
-    let simulationInterval = null;
-    let initialD = 0; // 初期状態の二乗和
-    let players = {
-      takahashi: { r: 0, c: 0 },
-      aoki: { r: 0, c: 0 }
-    };
-    const cellSize = 40; // セルのサイズ（ピクセル）
-
-    // 履歴保存用。各要素は { boardA, players } のスナップショット
-    let historyStates = [];
-
-    // 盤面（グリッド）の作成
-    function createGrid() {
-      const grid = document.getElementById("grid");
-      grid.innerHTML = "";
-      grid.style.gridTemplateColumns = `repeat(${board.N}, ${cellSize}px)`;
-      grid.style.width = board.N * cellSize + "px";
-      grid.style.height = board.N * cellSize + "px";
-
-      for (let i = 0; i < board.N; i++) {
-        for (let j = 0; j < board.N; j++) {
-          const cell = document.createElement("div");
-          cell.className = "cell";
-          cell.style.width = cellSize + "px";
-          cell.style.height = cellSize + "px";
-          cell.id = `cell-${i}-${j}`;
-          cell.textContent = board.a[i][j];
-
-          // 外側の境界線は常に描画
-          cell.style.borderTop = "1px solid black";
-          cell.style.borderLeft = "1px solid black";
-          // 右側の壁：右端は必ず壁、中央は v[i][j] が "1" なら太い壁
-          if (j === board.N - 1) {
-            cell.style.borderRight = "3px solid black";
-          } else {
-            cell.style.borderRight = board.v[i][j] === "1" ? "3px solid black" : "1px solid lightgreen";
-          }
-          // 下側の壁：下端は必ず壁、中央は h[i][j] が "1" なら太い壁
-          if (i === board.N - 1) {
-            cell.style.borderBottom = "3px solid black";
-          } else {
-            cell.style.borderBottom = board.h[i][j] === "1" ? "3px solid black" : "1px solid lightgreen";
-          }
-
-          grid.appendChild(cell);
-        }
-      }
-    }
-
-    // 入力テキスト（盤面情報）のパース
-    function parseInput(text) {
-      const lines = text.split("\n").map(l => l.trim()).filter(l => l.length > 0);
-      let index = 0;
-      // 最初の行：t と N（例："0 10"）
-      let firstLine = lines[index++].split(" ");
-      board.t = parseInt(firstLine[0]);
-      board.N = parseInt(firstLine[1]);
-      const N = board.N;
-
-      // 次の N 行：縦の壁情報
-      board.v = [];
-      for (let i = 0; i < N; i++) {
-        board.v.push(lines[index++]);
-      }
-
-      // 次の N-1 行：横の壁情報
-      board.h = [];
-      for (let i = 0; i < N - 1; i++) {
-        board.h.push(lines[index++]);
-      }
-
-      // 次の N 行：各セルの数字（空白区切り）
-      board.a = [];
-      for (let i = 0; i < N; i++) {
-        board.a.push(lines[index++].split(" ").map(Number));
-      }
-    }
-
-    // 出力テキスト（操作）のパース
-    function parseOutput(text) {
-      const lines = text.split("\n").map(l => l.trim()).filter(l => l.length > 0);
-      moves = [];
-      // 初期位置：1行目は「p_i p_j q_i q_j」
-      const init = lines[0].split(" ").map(Number);
-      players.takahashi = { r: init[0], c: init[1] };
-      players.aoki = { r: init[2], c: init[3] };
-
-      // 残りの各行は操作（swap, 高橋君の移動, 青木君の移動）
-      for (let i = 1; i < lines.length; i++) {
-        const parts = lines[i].split(" ");
-        moves.push({
-          swap: parts[0],
-          takahashiMove: parts[1],
-          aokiMove: parts[2]
-        });
-      }
-    }
-
-    // セル内の数字表示を更新
-    function updateCell(i, j) {
-      const cell = document.getElementById(`cell-${i}-${j}`);
-      if (cell) {
-        cell.textContent = board.a[i][j];
-      }
-    }
-
-    // 既存のプレイヤー表示を削除
-    function clearPlayerMarkers() {
-      document.querySelectorAll(".player").forEach(el => el.remove());
-    }
-
-    // 現在のプレイヤーの位置を盤面に描画
-    function drawPlayers() {
-      clearPlayerMarkers();
-      let cellT = document.getElementById(`cell-${players.takahashi.r}-${players.takahashi.c}`);
-      if (cellT) {
-        const markerT = document.createElement("div");
-        markerT.className = "player takahashi";
-        cellT.appendChild(markerT);
-      }
-      let cellA = document.getElementById(`cell-${players.aoki.r}-${players.aoki.c}`);
-      if (cellA) {
-        const markerA = document.createElement("div");
-        markerA.className = "player aoki";
-        cellA.appendChild(markerA);
-      }
-    }
-
-    // 隣接セル間の数字の差の二乗和（スコア計算用）
-    function computeScore() {
-      let D = 0;
-      const N = board.N;
-      for (let i = 0; i < N; i++) {
-        for (let j = 0; j < N; j++) {
-          // 右側のセル（壁がなければ）
-          if (j < N - 1 && board.v[i][j] === "0") {
-            let diff = board.a[i][j] - board.a[i][j+1];
-            D += diff * diff;
-          }
-          // 下側のセル（壁がなければ）
-          if (i < N - 1 && board.h[i][j] === "0") {
-            let diff = board.a[i][j] - board.a[i+1][j];
-            D += diff * diff;
-          }
-        }
-      }
-      return D;
-    }
-
-    // 現在の状態を履歴に保存（深いコピー）
-    function saveState() {
-      const snapshot = {
-        boardA: JSON.parse(JSON.stringify(board.a)),
-        players: {
-          takahashi: { r: players.takahashi.r, c: players.takahashi.c },
-          aoki: { r: players.aoki.r, c: players.aoki.c }
-        }
-      };
-      historyStates.push(snapshot);
-    }
-
-    // 1手の操作を実行（swap → 高橋君の移動 → 青木君の移動）
-    function executeMove(move) {
-      if (move.swap === "1") {
-        const rT = players.takahashi.r, cT = players.takahashi.c;
-        const rA = players.aoki.r, cA = players.aoki.c;
-        let temp = board.a[rT][cT];
-        board.a[rT][cT] = board.a[rA][cA];
-        board.a[rA][cA] = temp;
-        updateCell(rT, cT);
-        updateCell(rA, cA);
-      }
-      const dt = dirMap[move.takahashiMove];
-      players.takahashi.r += dt.r;
-      players.takahashi.c += dt.c;
-      const da = dirMap[move.aokiMove];
-      players.aoki.r += da.r;
-      players.aoki.c += da.c;
-      drawPlayers();
-    }
-
-    // 1手を実行し、状態を履歴に保存。すべての手が終了したらスコアを更新
-    function nextStep() {
-      if (currentMove < moves.length) {
-        executeMove(moves[currentMove]);
-        currentMove++;
-        saveState();
-      } else {
-        clearInterval(simulationInterval);
-        simulationInterval = null;
-        updateScore();
-      }
-    }
-
-    // 1手前に戻る処理（履歴から復元）
-    function prevStep() {
-      if (currentMove > 0) {
-        currentMove--;
-        const snapshot = historyStates[currentMove];
-        // 復元（ディープコピー）
-        board.a = JSON.parse(JSON.stringify(snapshot.boardA));
-        players.takahashi = { r: snapshot.players.takahashi.r, c: snapshot.players.takahashi.c };
-        players.aoki = { r: snapshot.players.aoki.r, c: snapshot.players.aoki.c };
-        // 全セルの表示を更新
-        for (let i = 0; i < board.N; i++) {
-          for (let j = 0; j < board.N; j++) {
-            updateCell(i, j);
-          }
-        }
-        drawPlayers();
-        // スコアは最終状態のみ表示
-        document.getElementById("scoreDisplay").textContent = "Score: -";
-      }
-    }
-
-    // スコアを更新して表示
-    function updateScore() {
-      const finalD = computeScore();
-      const ratio = finalD / initialD;
-      let computedScore = Math.round(1e6 * Math.log2(ratio));
-      computedScore = Math.max(1, computedScore);
-      document.getElementById("scoreDisplay").textContent = 
-        `Score: ${computedScore}  (初期 D: ${initialD}, 最終 D: ${finalD})`;
-    }
-
-    // 移動方向の対応表
-    const dirMap = {
-      "U": { r: -1, c: 0 },
-      "D": { r: 1, c: 0 },
-      "L": { r: 0, c: -1 },
-      "R": { r: 0, c: 1 },
-      ".": { r: 0, c: 0 }
-    };
-
-    // テキストエリアから情報をパースし、盤面・プレイヤー表示、履歴・スコアの初期化を行う
-    function resetSimulation() {
-      if (simulationInterval) {
-        clearInterval(simulationInterval);
-        simulationInterval = null;
-      }
-      currentMove = 0;
-      const inputText = document.getElementById("inputText").value;
-      const outputText = document.getElementById("outputText").value;
-      parseInput(inputText);
-      parseOutput(outputText);
-      createGrid();
-      drawPlayers();
-      initialD = computeScore();
-      document.getElementById("scoreDisplay").textContent = "Score: -";
-      historyStates = [];
-      // 初期状態の保存
-      saveState();
-    }
-
-    document.getElementById("resetBtn").addEventListener("click", resetSimulation);
-    document.getElementById("backBtn").addEventListener("click", prevStep);
-    document.getElementById("playBtn").addEventListener("click", function(){
-      if (!simulationInterval) {
-        simulationInterval = setInterval(nextStep, 200);
-      }
-    });
-    document.getElementById("pauseBtn").addEventListener("click", function(){
-      if (simulationInterval) {
-        clearInterval(simulationInterval);
-        simulationInterval = null;
-      }
-    });
-    document.getElementById("stepBtn").addEventListener("click", nextStep);
-    window.onload = resetSimulation;
-  </script>
+    <script src="./script.js"></script>
 </body>
+
 </html>

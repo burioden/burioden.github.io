@@ -1,0 +1,68 @@
+body {
+  font-family: sans-serif;
+  margin: 20px;
+}
+
+.wrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.input-field {
+    flex: 1;
+    margin-right: 20px;
+}
+
+.output-field {
+    flex: 1;
+}
+
+#grid {
+  display: grid;
+  /* N×N の盤面を後で動的に設定 */
+  gap: 1px;
+  margin-bottom: 20px;
+}
+.cell {
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  line-height: 30px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+}
+.player {
+  background-color: #a0d2eb; /* プレイヤー位置を示す色 */
+}
+.hole {
+  background-color: #f0e68c; /* 穴を示す色 */
+  font-weight: bold;
+}
+.rock {
+  color: #555;
+}
+.ore {
+  color: #d2691e;
+}
+#controls {
+  margin-bottom: 20px;
+}
+textarea {
+  width: 100%;
+  font-family: monospace;
+  margin-bottom: 10px;
+}
+button {
+  margin-right: 10px;
+}
+#inputData {
+  height: 300px; /* N, M, そしてN行の盤面を入れる想定 */
+}
+#commands {
+  height: 150px; /* コマンド用 */
+}
+#scoreboard {
+  font-size: 1.2em;
+  color: #d9534f; /* 強調表示用 */
+  margin-bottom: 20px;
+}
