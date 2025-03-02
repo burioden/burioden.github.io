@@ -4,17 +4,17 @@ body {
 }
 
 .wrapper {
-    display: flex;
-    justify-content: center;
+  display: flex;
+  justify-content: center;
 }
 
+/* 入力用・出力用テキストエリアを横並びに */
 .input-field {
-    flex: 1;
-    margin-right: 20px;
+  flex: 1;
+  margin-right: 20px;
 }
-
 .output-field {
-    flex: 1;
+  flex: 1;
 }
 
 #grid {
