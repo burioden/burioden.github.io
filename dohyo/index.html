@@ -3,23 +3,23 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>洞窟ビジュアライザ</title>
+    <title>dohyo visualizer</title>
     <!-- 外部CSSファイル -->
     <link rel="stylesheet" href="./style.css">
 </head>
 
 <body>
-    <h1>洞窟ビジュアライザ</h1>
-
-    <!-- スコア表示領域 -->
-    <div id="scoreboard">Score: (まだ計算されていません)</div>
-
     <div class="wrapper">
-        <!-- 入力(N M + 盤面) -->
-        <div class="input-field">
-            <h2>入力 (N, M, 盤面)</h2>
-            <textarea id="inputData"
-                placeholder="例:&#10;20 1&#10;..a.@....a.....a....&#10;..@........@..a.@a@.&#10;..aa...a..@.....a...&#10;...">
+        <section class="header">
+            <h1 class="heading">dohyo visualizer</h1>
+            <!-- スコア表示 -->
+            <div id="scoreboard" class="scoreboard">Score: (まだ計算されていません)</div>
+        </section>
+        <section class="in_out">
+            <!-- 入力(N M + 盤面) -->
+            <div class="input-field">
+                <h2>入力 (N, M, 盤面)</h2>
+                <textarea id="inputData" class="inputData">
 20 1
 ..a.@....a.....a....
 ..@........@..a.@a@.
@@ -42,118 +42,29 @@
 ............a..@....
 .......a.@..........
             </textarea>
-        </div>
+            </div>
 
-        <div class="output-field">
-            <!-- コマンド入力 -->
-            <h2>コマンド入力</h2>
-            <textarea id="commands" placeholder="例:&#10;1 R&#10;1 R&#10;2 L&#10;3 U">
-1 R
-1 R
-1 R
-2 L
-2 L
-2 L
-1 R
-1 R
-1 R
-1 R
-1 R
-1 R
-1 R
-1 R
-2 L
-2 L
-2 L
-2 L
-2 L
-2 L
-2 L
-2 L
-1 R
-1 R
-1 R
-1 R
-1 R
-1 R
-1 R
-1 R
-1 R
-1 R
-1 R
-1 R
-1 R
-2 L
-2 L
-2 L
-2 L
-2 L
-2 L
-2 L
-2 L
-2 L
-2 L
-2 L
-2 L
-2 L
-1 R
-1 R
-1 R
-1 R
-1 R
-1 R
-1 R
-1 R
-1 R
-1 R
-1 R
-1 R
-1 R
-1 R
-1 R
-1 R
-2 L
-2 L
-2 L
-2 L
-2 L
-2 L
-2 L
-2 L
-2 L
-2 L
-2 L
-2 L
-2 L
-2 L
-2 L
-2 L
-1 D
-1 D
-3 U
-1 D
-1 D
-1 D
-1 D
-1 D
-3 U
+            <div class="output-field">
+                <h2>出力</h2>
+                <textarea id="commands" class="commands"></textarea>
+            </div>
+        </section>
 
-            </textarea>
-        </div>
+        <section class="visualization">
+            <div id="controls" class="controls">
+                <button id="resetBtn">描画</button>
+                <button id="stepBtn">1手進む</button>
+                <button id="stepBackBtn">1手戻す</button>
+                <button id="playBtn">自動再生</button>
+                <button id="stopBtn">一時停止</button>
+            </div>
+            <div id="grid" class="grid">
+                <span class="grid-placeholder">ここに、結果が、でる</span>
+            </div>
+        </section>
     </div>
-
-    <div id="controls">
-        <button id="resetBtn">描画</button>
-        <button id="stepBtn">1手進む</button>
-        <button id="stepBackBtn">1手戻す</button>
-        <button id="playBtn">自動再生</button>
-        <button id="stopBtn">一時停止</button>
-    </div>
-
-    <div id="grid"></div>
-
-    <!-- 外部JSファイル -->
     <script src="./script.js"></script>
+    </div>
 </body>
 
 </html>

@@ -1,27 +1,55 @@
 body {
   font-family: sans-serif;
   margin: 20px;
+  color: #555;
 }
 
 .wrapper {
-  display: flex;
-  justify-content: center;
+    display: grid;
+    grid-template-areas:
+        "heading visualization visualization"
+        "in_out visualization visualization";
+    max-width: 970px;
+    margin: 0 auto;
+}
+
+.header {
+    grid-area: heading;
+}
+
+.heading {
+    margin: 0;
+    font-size: 1.5em;
+}
+
+.in_out {
+    grid-area: in_out;
+    display: flex;
+    flex-direction: column;
+}
+
+.visualization {
+    grid-area: visualization;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    height: 665px;
 }
 
 /* 入力用・出力用テキストエリアを横並びに */
 .input-field {
   flex: 1;
-  margin-right: 20px;
 }
 .output-field {
   flex: 1;
 }
 
-#grid {
+.grid {
   display: grid;
   /* N×N の盤面を後で動的に設定 */
   gap: 1px;
-  margin-bottom: 20px;
+  place-items: center;
+  height: 100%;
 }
 .cell {
   width: 30px;
@@ -44,25 +72,39 @@ body {
 .ore {
   color: #d2691e;
 }
-#controls {
+.controls {
   margin-bottom: 20px;
+  text-align: right;
+  display: flex;
+  gap: 20px;
 }
 textarea {
-  width: 100%;
   font-family: monospace;
-  margin-bottom: 10px;
+  width: 200px;
+  border: 1px solid #ccc;
+  padding: 10px;
 }
 button {
-  margin-right: 10px;
+  padding: 10px 20px;
+  cursor: pointer;
+  background-color: #5cb85c;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  transition: scale 0.3s;
 }
-#inputData {
-  height: 300px; /* N, M, そしてN行の盤面を入れる想定 */
+button:hover {
+  scale: 1.1;
 }
-#commands {
+.inputData {
+  height: 200px; /* N, M, そしてN行の盤面を入れる想定 */
+}
+.commands {
   height: 150px; /* コマンド用 */
 }
-#scoreboard {
-  font-size: 1.2em;
+.scoreboard {
   color: #d9534f; /* 強調表示用 */
-  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px dashed #ccc;
 }
